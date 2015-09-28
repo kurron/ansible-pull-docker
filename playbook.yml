@@ -33,3 +33,5 @@
       file: path=/usr/local/bin/docker-compose owner=root group=root mode=0555
     - name: Echo Docker Compose version
       command: docker-compose --version
+    - name: Rebuild GRUB
+      command: update-grub
