@@ -7,6 +7,13 @@
     - name: create groups based on distribution
       group_by: key={{ ansible_distribution }}
 
+- name: Set root password
+  hosts: Ubuntu
+  sudo: True
+  tasks:
+    - name: Set Root Password
+      user: name=root password=8c5205ec1d1f7588e71e60c5738e781f8e4f2d44d38048bca9801c1298abfa6364e1e74a0d3f1997f452d94b984eb94bb12df6e869e301be50e8eaddf721b9b4
+
 - name: Install Docker
   hosts: Ubuntu
   sudo: True
