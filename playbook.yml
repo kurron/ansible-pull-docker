@@ -30,6 +30,7 @@
       command: service docker restart
     - name: Test Docker
       command: docker run hello-world
+
     - name: Download Docker Compose Script
       shell: /usr/bin/curl --location --output /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.5.0/docker-compose-`uname -s`-`uname -m`
     - name: Set Permission Bits On The Docker Compose Script
@@ -38,3 +39,8 @@
       command: docker-compose --version
     - name: Rebuild GRUB
       command: update-grub
+
+    - name: Download Docker Machine Archive
+      get_url: url=https://github.com/docker/machine/releases/download/v0.5.0/docker-machine_linux-amd64.zip dest=/root/machine.zip mode=0440
+    - name: Unpack Docker Machine Archive
+      unarchive: src=/root/machine.zip dest=/usr/local/bin copy=no owner=root group=root mode=555 creates=/usr/local/bin/docker-machine
