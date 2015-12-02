@@ -21,6 +21,8 @@
       shell: /root/install-docker
     - name: Set Memory and Swap Accounting
       lineinfile: dest=/etc/default/grub regexp='^GRUB_CMDLINE_LINUX=""' line='GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
+    - name: Rebuild Grub
+      command: /usr/sbin/update-grub
     - name: Make some adjustments to the Docker configuration (use overlayFS)
       lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay"'
     - name: Add account to the docker group
