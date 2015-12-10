@@ -17,6 +17,8 @@ This project is intended to be invoked by the JVM Development Environment projec
 ##Installed Software
 
 * [Docker](https://www.docker.com/)
+* [Docker Compose](https://www.docker.com/)
+* [Docker Machine](https://www.docker.com/)
 
 #Troubleshooting
 
