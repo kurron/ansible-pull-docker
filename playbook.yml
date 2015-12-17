@@ -24,7 +24,8 @@
     - name: Rebuild Grub
       command: /usr/sbin/update-grub
     - name: Make some adjustments to the Docker configuration (use overlayFS)
-      lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay"'
+#     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay"'
+      lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=aufs"'
     - name: Add account to the docker group
 #     user: name=vagrant groups=docker
       command: usermod -aG docker vagrant
