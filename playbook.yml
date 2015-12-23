@@ -45,6 +45,6 @@
       command: update-grub
 
     - name: Download Docker Machine Archive
-      get_url: url=https://github.com/docker/machine/releases/download/v0.5.4/docker-machine_linux-amd64.zip dest=/root/machine.zip mode=0440
+      get_url: url=https://github.com/docker/machine/releases/download/v0.5.4/docker-machine_linux-amd64 dest=/root/machine.zip mode=0440
     - name: Unpack Docker Machine Archive
       unarchive: src=/root/machine.zip dest=/usr/local/bin copy=no owner=root group=root mode=555 creates=/usr/local/bin/docker-machine
