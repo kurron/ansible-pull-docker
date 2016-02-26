@@ -44,6 +44,6 @@
       command: update-grub
 
     - name: Download Docker Machine Archive
-      get_url: url=https://github.com/docker/machine/releases/download/v0.6.0/docker-machine_linux-amd64 dest=/usr/local/bin/docker-machine mode=0555
+      get_url: url=https://github.com/docker/machine/releases/download/v0.6.0/docker-machine-Linux-x86_64 dest=/usr/local/bin/docker-machine mode=0555
     - name: Echo Docker Machine version
       command: docker-machine --version
