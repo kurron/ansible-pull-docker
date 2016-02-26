@@ -9,7 +9,7 @@
 
 - name: Install Docker
   hosts: Ubuntu
-  sudo: True
+  become: True
   tasks:
     - name: Install cURL
       apt: name=curl state=latest update_cache=true cache_valid_time=600
