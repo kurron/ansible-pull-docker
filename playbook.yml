@@ -25,7 +25,8 @@
       command: /usr/sbin/update-grub
     - name: Make some adjustments to the Docker configuration
 #     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=aufs --graph=/opt/docker"'
-      lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay --graph=/opt/docker"'
+#     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay --graph=/opt/docker"'
+      lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="--graph=/opt/docker"'
     - name: Add account to the docker group
 #     user: name=vagrant groups=docker
       command: usermod -aG docker vagrant
