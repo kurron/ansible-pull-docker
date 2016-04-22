@@ -34,6 +34,8 @@
     - name: Add account to the docker group
 #     user: name=vagrant groups=docker
       command: usermod -aG docker vagrant
+    - name: Flush changes
+      command: systemctl daemon-reload
     - name: Restart Docker
 #     command: service docker restart
       command: systemctl restart docker
