@@ -27,6 +27,8 @@
 #     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=aufs --graph=/opt/docker"'
 #     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay --graph=/opt/docker"'
 #     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="--graph=/opt/docker"'
+    - name: Create the Docker configuration folder for 16.04 boxes
+      file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
     - name: Copy Docker configuration file for 16.04 boxes
       copy: src=files/root-dir.conf dest=/etc/systemd/system/docker.service.d/root-dir.conf owner=root group=root mode=444 backup=no
     - name: Add account to the docker group
