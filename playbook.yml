@@ -23,22 +23,15 @@
 #     lineinfile: dest=/etc/default/grub regexp='^GRUB_CMDLINE_LINUX=""' line='GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
 #   - name: Rebuild Grub
 #     command: /usr/sbin/update-grub
-#   - name: Make some adjustments to the Docker configuration
+    - name: Make some adjustments to the Docker configuration
 #     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=aufs --graph=/opt/docker"'
 #     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay --graph=/opt/docker"'
-#     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="--graph=/opt/docker"'
-    - name: Create the Docker configuration folder for 16.04 boxes
-      file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
-    - name: Copy Docker configuration file for 16.04 boxes
-      copy: src=files/root-dir.conf dest=/etc/systemd/system/docker.service.d/root-dir.conf owner=root group=root mode=444 backup=no
+      lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="--graph=/opt/docker"'
     - name: Add account to the docker group
 #     user: name=vagrant groups=docker
       command: usermod -aG docker vagrant
-    - name: Flush changes
-      command: systemctl daemon-reload
     - name: Restart Docker
-#     command: service docker restart
-      command: systemctl restart docker
+      command: service docker restart
     - name: Test Docker
       command: docker run hello-world
 
