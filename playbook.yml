@@ -34,6 +34,10 @@
     - name: Add account to the docker group
 #     user: name=vagrant groups=docker
       command: usermod -aG docker vagrant
+    # Gosha changes -- removes container limits
+    - lineinfile: dest=/etc/systemd/system.conf regexp='#DefaultTasksMax=512' line='DefaultTasksMax=unlimited'
+    - lineinfile: dest=/etc/systemd/system.conf insertafter='\[Manager\]' line='TasksMax=unlimited'
+    - lineinfile: dest=/lib/systemd/system/docker.service insertafter='\[Service\]' line='TasksMax=infinity'
     - name: Flush changes
       command: systemctl daemon-reload
     - name: Restart Docker
