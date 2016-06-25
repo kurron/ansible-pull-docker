@@ -47,7 +47,7 @@
       command: docker run hello-world
 
     - name: Download Docker Compose Script
-      shell: /usr/bin/curl --location --output /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m`
+      shell: /usr/bin/curl --location --output /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.7.1/docker-compose-`uname -s`-`uname -m`
     - name: Set Permission Bits On The Docker Compose Script
       file: path=/usr/local/bin/docker-compose owner=root group=root mode=0555
     - name: Echo Docker Compose version
