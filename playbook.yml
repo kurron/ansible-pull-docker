@@ -4,57 +4,38 @@
   hosts: all
   gather_facts: True
   tasks:
-    - name: create groups based on distribution
-      group_by: key={{ ansible_distribution }}
+    - group_by: key={{ ansible_distribution }}
 
 - name: Install Docker
   hosts: Ubuntu
   become: True
   tasks:
-    - name: Install cURL
-      apt: name=curl state=latest update_cache=true cache_valid_time=600
-    - name: Download Docker Installation Script
-      command: /usr/bin/curl --location --output /root/install-docker https://get.docker.com/
-    - name: Set Permission Bits On The Docker Installation Script
-      file: path=/root/install-docker owner=root group=root mode=0500
-    - name: Execute Docker Installation Script
-      shell: /root/install-docker
-#   - name: Set Memory and Swap Accounting
-#     lineinfile: dest=/etc/default/grub regexp='^GRUB_CMDLINE_LINUX=""' line='GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
-#   - name: Rebuild Grub
-#     command: /usr/sbin/update-grub
-#   - name: Make some adjustments to the Docker configuration
-#     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=aufs --graph=/opt/docker"'
-#     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay --graph=/opt/docker"'
-#     lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="--graph=/opt/docker"'
-    - name: Create the Docker configuration folder for 16.04 boxes
-      file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
-    - name: Copy Docker configuration file for 16.04 boxes
-      copy: src=files/root-dir.conf dest=/etc/systemd/system/docker.service.d/root-dir.conf owner=root group=root mode=444 backup=no
-    - name: Add account to the docker group
-#     user: name=vagrant groups=docker
-      command: usermod -aG docker vagrant
+    - apt: name=curl state=latest update_cache=true cache_valid_time=600
+    - command: /usr/bin/curl --location --output /root/install-docker https://get.docker.com/
+    - file: path=/root/install-docker owner=root group=root mode=0500
+    - shell: /root/install-docker
+#   - lineinfile: dest=/etc/default/grub regexp='^GRUB_CMDLINE_LINUX=""' line='GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
+#   - command: /usr/sbin/update-grub
+#   - lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=aufs --graph=/opt/docker"'
+#   - lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay --graph=/opt/docker"'
+#   - lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="--graph=/opt/docker"'
+    - file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
+    - copy: src=files/root-dir.conf dest=/etc/systemd/system/docker.service.d/root-dir.conf owner=root group=root mode=444 backup=no
+#   - user: name=vagrant groups=docker
+    - command: usermod -aG docker vagrant
     # Gosha changes -- removes container limits
     - lineinfile: dest=/etc/systemd/system.conf regexp='#DefaultTasksMax=512' line='DefaultTasksMax=unlimited'
     - lineinfile: dest=/etc/systemd/system.conf insertafter='\[Manager\]' line='TasksMax=unlimited'
     - lineinfile: dest=/lib/systemd/system/docker.service insertafter='\[Service\]' line='TasksMax=infinity'
-    - name: Flush changes
-      command: systemctl daemon-reload
-    - name: Restart Docker
-#     command: service docker restart
-      command: systemctl restart docker
-    - name: Test Docker
-      command: docker run hello-world
+    - command: systemctl daemon-reload
+#   - command: service docker restart
+    - command: systemctl restart docker
+    - command: docker run hello-world
 
-    - name: Download Docker Compose Script
-      shell: /usr/bin/curl --location --output /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.7.1/docker-compose-`uname -s`-`uname -m`
-    - name: Set Permission Bits On The Docker Compose Script
-      file: path=/usr/local/bin/docker-compose owner=root group=root mode=0555
-    - name: Echo Docker Compose version
-      command: docker-compose --version
+    - shell: /usr/bin/curl --location --output /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.7.1/docker-compose-`uname -s`-`uname -m`
+    - file: path=/usr/local/bin/docker-compose owner=root group=root mode=0555
+    - command: docker-compose --version
 
-    - name: Download Docker Machine Archive
-      get_url: url=https://github.com/docker/machine/releases/download/v0.7.0/docker-machine-Linux-x86_64 dest=/usr/local/bin/docker-machine mode=0555
-    - name: Echo Docker Machine version
-      command: docker-machine --version
+    - get_url: url=https://github.com/docker/machine/releases/download/v0.7.0/docker-machine-Linux-x86_64 dest=/usr/local/bin/docker-machine mode=0555
+    - command: docker-machine --version
 
