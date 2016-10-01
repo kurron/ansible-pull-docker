@@ -28,10 +28,10 @@
     - command: systemctl restart docker
     - command: docker run hello-world
 
-    - shell: /usr/bin/curl --location --output /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m`
+    - shell: /usr/bin/curl --location --output /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.8.1/docker-compose-`uname -s`-`uname -m`
     - file: path=/usr/local/bin/docker-compose owner=root group=root mode=0555
     - command: docker-compose --version
 
-    - get_url: url=https://github.com/docker/machine/releases/download/v0.8.0/docker-machine-Linux-x86_64 dest=/usr/local/bin/docker-machine mode=0555
+    - get_url: url=https://github.com/docker/machine/releases/download/v0.8.2/docker-machine-Linux-x86_64 dest=/usr/local/bin/docker-machine mode=0555
     - command: docker-machine --version
 
