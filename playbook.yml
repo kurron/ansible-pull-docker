@@ -37,7 +37,7 @@
 - name: Install Docker Compose
   hosts: all
   become: True
-    vars:
+  vars:
     version: 1.8.1
   tasks:
     - shell: /usr/bin/curl --location --output /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/{{ version }}/docker-compose-`uname -s`-`uname -m`
@@ -47,7 +47,7 @@
 - name: Install Docker Machine
   hosts: all
   become: True
-    vars:
+  vars:
     version: 0.8.2
   tasks:
     - get_url: url=https://github.com/docker/machine/releases/download/v{{ version }}/docker-machine-Linux-x86_64 dest=/usr/local/bin/docker-machine mode=0555
