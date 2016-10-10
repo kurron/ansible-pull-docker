@@ -12,6 +12,12 @@
   tasks:
     - apt: name=curl state=latest update_cache=true cache_valid_time=600
 
+- name: Install CentOS Packages
+  hosts: CentOS
+  become: True
+  tasks:
+    - yum: name=curl state=latest
+
 - name: Install Docker
   hosts: Ubuntu
   become: True
@@ -19,20 +25,15 @@
     - command: /usr/bin/curl --location --output /root/install-docker https://get.docker.com/
     - file: path=/root/install-docker owner=root group=root mode=0500
     - shell: /root/install-docker
-#   - lineinfile: dest=/etc/default/grub regexp='^GRUB_CMDLINE_LINUX=""' line='GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
-#   - command: /usr/sbin/update-grub
-#   - lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=aufs --graph=/opt/docker"'
-#   - lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --storage-driver=overlay --graph=/opt/docker"'
-#   - lineinfile: dest=/etc/default/docker line='DOCKER_OPTS="--graph=/opt/docker"'
     - file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
     - copy: src=files/root-dir.conf dest=/etc/systemd/system/docker.service.d/root-dir.conf owner=root group=root mode=444 backup=no
-#   - user: name=vagrant groups=docker
-    - command: usermod -aG docker vagrant
-    - command: systemctl daemon-reload
+    - user: name=vagrant groups=docker append=yes
+#   - command: usermod -aG docker vagrant
+#   - command: systemctl daemon-reload
+    - systemd: state=restarted daemon_reload=yes name=docker
 #   - command: service docker restart
-    - command: systemctl restart docker
+#   - command: systemctl restart docker
     - command: docker run hello-world
-
 
 - name: Install Docker Compose
   hosts: all
