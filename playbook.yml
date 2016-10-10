@@ -29,10 +29,10 @@
     - copy: src=files/root-dir.conf dest=/etc/systemd/system/docker.service.d/root-dir.conf owner=root group=root mode=444 backup=no
     - user: name=vagrant groups=docker append=yes
 #   - command: usermod -aG docker vagrant
-#   - command: systemctl daemon-reload
-    - systemd: state=restarted daemon_reload=yes name=docker
-#   - command: service docker restart
-#   - command: systemctl restart docker
+    - command: systemctl daemon-reload
+# TODO: when Ansible 2.2 comes out, switch to using this module instead
+#   - systemd: state=restarted daemon_reload=yes name=docker
+    - command: systemctl restart docker
     - command: docker run hello-world
 
 - name: Install Docker Compose
