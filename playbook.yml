@@ -19,7 +19,7 @@
     - yum: name=curl state=latest
 
 - name: Install Docker
-  hosts: Ubuntu
+  hosts: all
   become: True
   tasks:
     - command: /usr/bin/curl --location --output /root/install-docker https://get.docker.com/
