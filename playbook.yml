@@ -18,6 +18,20 @@
   tasks:
     - yum: name=curl state=latest
 
+- name: Install Docker Configuration File (Ubuntu)
+  hosts: Ubuntu
+  become: True
+  tasks:
+    - file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
+    - copy: src=files/root-dir.conf dest=/etc/systemd/system/docker.service.d/root-dir.conf owner=root group=root mode=444 backup=no
+
+- name: Install Docker Configuration File (CentOS)
+  hosts: CentOS
+  become: True
+  tasks:
+    - file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
+    - copy: src=files/root-dir-centos.conf dest=/etc/systemd/system/docker.service.d/root-dir.conf owner=root group=root mode=444 backup=no
+
 - name: Install Docker
   hosts: all
   become: True
@@ -25,8 +39,6 @@
     - command: /usr/bin/curl --location --output /root/install-docker https://get.docker.com/
     - file: path=/root/install-docker owner=root group=root mode=0500
     - shell: /root/install-docker
-    - file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
-    - copy: src=files/root-dir.conf dest=/etc/systemd/system/docker.service.d/root-dir.conf owner=root group=root mode=444 backup=no
     - user: name=vagrant groups=docker append=yes
 #   - command: usermod -aG docker vagrant
     - command: systemctl daemon-reload
