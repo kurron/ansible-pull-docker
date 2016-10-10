@@ -40,9 +40,8 @@
   vars:
     version: 1.8.1
   tasks:
-    - shell: /usr/bin/curl --location --output /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/{{ version }}/docker-compose-`uname -s`-`uname -m`
-    - file: path=/usr/local/bin/docker-compose owner=root group=root mode=0555
-    - command: docker-compose --version
+    - get_url: url=https://github.com/docker/compose/releases/download/{{ version }}/docker-compose-Linux-x86_64 dest=/usr/local/bin/docker-compose mode=0555
+    - command: /usr/local/bin/docker-compose --version
 
 - name: Install Docker Machine
   hosts: all
@@ -51,4 +50,4 @@
     version: 0.8.2
   tasks:
     - get_url: url=https://github.com/docker/machine/releases/download/v{{ version }}/docker-machine-Linux-x86_64 dest=/usr/local/bin/docker-machine mode=0555
-    - command: docker-machine --version
+    - command: /usr/local/bin/docker-machine --version
