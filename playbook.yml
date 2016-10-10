@@ -45,7 +45,7 @@
 # TODO: when Ansible 2.2 comes out, switch to using this module instead
 #   - systemd: state=restarted daemon_reload=yes name=docker
     - command: systemctl restart docker
-    - command: docker run hello-world
+    - command: docker run --rm hello-world
 
 - name: Install Docker Compose
   hosts: all
